@@ -9,9 +9,14 @@ const m = image[0].length;
 async function getPixelColor(x, y) {
 	try {
 		const response = await placeAjax.get(`api/pos-info?x=${x}&y=${y}`).then((data) => {
-			if (data.pixel !== undefined || data.pixel !== null || data.pixel !== '') {
-				console.log(data.pixel.colour);
-				return data.pixel.colour;
+			if ("pixel" in data) {
+				if (data.pixel != null && data.pixel != undefined && "colour" in data.pixel) {
+					console.log(data.pixel.colour);
+					return data.pixel.colour;
+				} else {
+					console.log("No colour");
+					return "";
+				}
 			} else {
 				console.log('No pixel found');
 			}
@@ -47,7 +52,6 @@ async function main() {
 	let x = 0;
 	let y = 0;
 	let currentHex = '#000000';
-	let currentTimer = 0;
 	let noskip = false;
 	while (true) {
 		console.log("iteration");
@@ -57,7 +61,7 @@ async function main() {
 		if (currentHex.startsWith('#')) {
 			await getPixelColor(px, px).then((data) => {
 				console.log(data);
-				if (data === undefined || currentHex.slice(1) !== data) {
+				if (currentHex.slice(1) !== data) {
 					console.log(`Placing color ${currentHex} at pixel ${px}, ${py}`);
 					noskip = true;
 				} else {
