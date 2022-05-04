@@ -59,7 +59,7 @@ async function main() {
 		py = start[1] + y;
 		currentHex = image[x][y];
 		if (currentHex.startsWith('#')) {
-			await getPixelColor(px, px).then((data) => {
+			await getPixelColor(px, py).then((data) => {
 				console.log(data);
 				if (currentHex.slice(1) !== data) {
 					console.log(`Placing color ${currentHex} at pixel ${px}, ${py}`);
