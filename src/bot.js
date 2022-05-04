@@ -100,3 +100,5 @@ async function main() {
 		await sleep(100);
 	}
 }
+
+main();

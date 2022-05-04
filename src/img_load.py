@@ -5,7 +5,6 @@ from mappings import *
 
 def rgbToHex(rgb):
 	return '#%02x%02x%02x' % rgb
-	
 
 image = Image.open("img/strawb.png")
 pixels = image.load()
