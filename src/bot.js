@@ -11,14 +11,14 @@ async function getPixelColor(x, y) {
 		const response = await placeAjax.get(`api/pos-info?x=${x}&y=${y}`).then((data) => {
 			if ("pixel" in data) {
 				if (data.pixel != null && data.pixel != undefined && "colour" in data.pixel) {
-					console.log(data.pixel.colour);
+					console.log(`(${x},${y}) is ${data.pixel.colour}`);
 					return data.pixel.colour;
 				} else {
-					console.log("No colour");
+					console.log(`(${x},${y}) is empty`);
 					return "";
 				}
 			} else {
-				console.log('No pixel found');
+				console.log(`(${x},${y}) : no pixel found`);
 			}
 		});
 		return response;
@@ -30,7 +30,6 @@ async function getPixelColor(x, y) {
 async function placePixel(x, y, hex) {
 	try {
 		const response = await placeAjax.post(`api/place`, { x: x, y: y, hex: hex }).then((data) => {
-			console.log(data);
 			return data;
 		});
 		return response;
@@ -47,6 +46,21 @@ function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function computexy(x, y, n, m) {
+	if (x === n - 1 && y === m - 1) {
+		x = 0;
+		y = 0;
+		return true;
+	} else if (x === n - 1) {
+		x = 0;
+		y++;
+		return false;
+	} else {
+		x++;
+		return false;
+	}
+}
+
 async function main() {
 	console.log('Starting...');
 	let x = 0;
@@ -54,13 +68,12 @@ async function main() {
 	let currentHex = '#000000';
 	let noskip = false;
 	while (true) {
-		console.log("iteration");
+		console.log("Current pixel : (" + x + "," + y + ")");
 		px = start[0] + x;
 		py = start[1] + y;
 		currentHex = image[x][y];
 		if (currentHex.startsWith('#')) {
 			await getPixelColor(px, py).then((data) => {
-				console.log(data);
 				if (currentHex.slice(1) !== data) {
 					console.log(`Placing color ${currentHex} at pixel ${px}, ${py}`);
 					noskip = true;
@@ -83,17 +96,15 @@ async function main() {
 				await sleep((currentTimer) * 1000);
 				await sleep(getRandomInt(5, 11) * 1000);
 			}
-		} else {
-			if (x === n - 1) {
-				x = 0;
-				y = (y + 1) % m;
-			} else {
-				x++;
-			}
 		}
-		if (x === n - 1) {
+		if (x === n - 1 && y === m - 1) {
 			x = 0;
-			y = (y + 1) % m;
+			y = 0;
+			console.log("End of image, returning to start in 10 seconds");
+			await sleep(10 * 1000);
+		} else if (x === n - 1) {
+			x = 0;
+			y++;
 		} else {
 			x++;
 		}
