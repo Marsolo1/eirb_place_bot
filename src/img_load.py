@@ -6,7 +6,7 @@ from mappings import *
 def rgbToHex(rgb):
 	return '#%02x%02x%02x' % rgb
 
-image = Image.open("img/strawb.png")
+image = Image.open("img/bs.png")
 pixels = image.load()
 colormap = ColorMapper()
 colorarray = colormap.generate_rgb_colors_array()

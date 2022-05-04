@@ -12,3 +12,5 @@ la ou l'image doit etre mise sur eirbplace dans la variable start
 11. lancer le snippet, et ça devrait marcher
 12. ???
 13. Profit.
+
+To stop reload the page.
