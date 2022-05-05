@@ -2,11 +2,12 @@
 from PIL import Image
 import numpy as np
 from mappings import *
+import sys
 
 def rgbToHex(rgb):
 	return '#%02x%02x%02x' % rgb
 
-image = Image.open("")
+image = Image.open(sys.argv[1])
 pixels = image.load()
 colormap = ColorMapper()
 colorarray = colormap.generate_rgb_colors_array()

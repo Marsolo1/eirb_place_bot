@@ -92,7 +92,7 @@ async function main() {
 					currentTimer = data.timer.seconds;
 				});
 				await sleep((currentTimer) * 1000);
-				await sleep(getRandomInt(5, 11) * 1000);
+				await sleep(getRandomInt(150, 600) * 10);
 			}
 		}
 		if (x === n - 1 && y === m - 1) {
