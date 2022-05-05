@@ -72,12 +72,12 @@ async function main() {
 		currentHex = image[x][y];
 		if (currentHex.startsWith('#')) {
 			await getPixelColor(px, py).then((data) => {
-				if (currentHex.slice(1) !== data) {
+				if (currentHex.slice(1) === data || (currentHex.slice(1) === "ffffff" && data === "")) {
+					console.log(`Pixel ${px}, ${py} is already ${data === "" ? "empty" : data}`);
+					noskip = false;
+				} else {
 					console.log(`Placing color ${currentHex} at pixel ${px}, ${py}`);
 					noskip = true;
-				} else {
-					console.log(`Pixel ${px}, ${py} is already ${data}`);
-					noskip = false;
 				}
 			}, (error) => {
 				console.log(error);
